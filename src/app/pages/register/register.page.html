@@ -13,7 +13,7 @@
       <!-- Foto do Usuário -->
       <div class="photo-container">
         <div class="photo-circle" (click)="selectPhoto()">
-          <img [src]="photoUrl || 'assets/avatar-placeholder.png'" alt="Foto do perfil">
+          <img [src]="photoUrl" alt="Foto do perfil">
           <div class="photo-overlay">
             <ion-icon name="camera"></ion-icon>
           </div>
@@ -23,58 +23,88 @@
       <!-- Campos Comuns -->
       <ion-item>
         <ion-label position="floating">Nome Completo</ion-label>
-        <ion-input type="text" formControlName="name"></ion-input>
-        <ion-note slot="error" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.errors?.['required']">
-          Nome é obrigatório
+        <ion-input
+          type="text"
+          formControlName="name"
+          [class.ion-valid]="registerForm.get('name')?.valid && registerForm.get('name')?.touched"
+          [class.ion-invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+        </ion-input>
+        <ion-note slot="error" *ngFor="let error of registerForm.get('name')?.errors | keyvalue">
+          {{ validationMessages.name[error.key] }}
         </ion-note>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">CPF</ion-label>
-        <ion-input type="text" formControlName="cpf" (ionInput)="formatCPF($event)" maxlength="14"></ion-input>
-        <ion-note slot="error" *ngIf="registerForm.get('cpf')?.touched && registerForm.get('cpf')?.errors?.['required']">
-          CPF é obrigatório
+        <ion-input
+          type="text"
+          formControlName="cpf"
+          (ionInput)="formatCPF($event)"
+          maxlength="14"
+          [class.ion-valid]="registerForm.get('cpf')?.valid && registerForm.get('cpf')?.touched"
+          [class.ion-invalid]="registerForm.get('cpf')?.invalid && registerForm.get('cpf')?.touched">
+        </ion-input>
+        <ion-note slot="error" *ngFor="let error of registerForm.get('cpf')?.errors | keyvalue">
+          {{ validationMessages.cpf[error.key] }}
         </ion-note>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">E-mail</ion-label>
-        <ion-input type="email" formControlName="email"></ion-input>
-        <ion-note slot="error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']">
-          E-mail é obrigatório
-        </ion-note>
-        <ion-note slot="error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']">
-          E-mail inválido
+        <ion-input
+          type="email"
+          formControlName="email"
+          [class.ion-valid]="registerForm.get('email')?.valid && registerForm.get('email')?.touched"
+          [class.ion-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+        </ion-input>
+        <ion-note slot="error" *ngFor="let error of registerForm.get('email')?.errors | keyvalue">
+          {{ validationMessages.email[error.key] }}
         </ion-note>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Telefone</ion-label>
-        <ion-input type="tel" formControlName="phone" (ionInput)="formatPhone($event)" maxlength="15"></ion-input>
-        <ion-note slot="error" *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.errors?.['required']">
-          Telefone é obrigatório
+        <ion-input
+          type="tel"
+          formControlName="phone"
+          (ionInput)="formatPhone($event)"
+          maxlength="15"
+          [class.ion-valid]="registerForm.get('phone')?.valid && registerForm.get('phone')?.touched"
+          [class.ion-invalid]="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
+        </ion-input>
+        <ion-note slot="error" *ngFor="let error of registerForm.get('phone')?.errors | keyvalue">
+          {{ validationMessages.phone[error.key] }}
         </ion-note>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Senha</ion-label>
-        <ion-input type="password" formControlName="password"></ion-input>
-        <ion-note slot="error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']">
-          Senha é obrigatória
-        </ion-note>
-        <ion-note slot="error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['minlength']">
-          A senha deve ter no mínimo 6 caracteres
+        <ion-input
+          type="password"
+          formControlName="password"
+          [class.ion-valid]="registerForm.get('password')?.valid && registerForm.get('password')?.touched"
+          [class.ion-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+        </ion-input>
+        <ion-note slot="error" *ngFor="let error of registerForm.get('password')?.errors | keyvalue">
+          {{ validationMessages.password[error.key] }}
         </ion-note>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Confirmar Senha</ion-label>
-        <ion-input type="password" formControlName="confirmPassword"></ion-input>
-        <ion-note slot="error" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors?.['required']">
-          Confirmação de senha é obrigatória
-        </ion-note>
-        <ion-note slot="error" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.errors?.['passwordMismatch']">
-          As senhas não conferem
+        <ion-input
+          type="password"
+          formControlName="confirmPassword"
+          [class.ion-valid]="!registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.valid && registerForm.get('confirmPassword')?.touched"
+          [class.ion-invalid]="(registerForm.errors?.['passwordMismatch'] || registerForm.get('confirmPassword')?.invalid) && registerForm.get('confirmPassword')?.touched">
+        </ion-input>
+        <ion-note slot="error" *ngIf="registerForm.get('confirmPassword')?.touched">
+          <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">
+            {{ validationMessages.confirmPassword.required }}
+          </span>
+          <span *ngIf="registerForm.errors?.['passwordMismatch']">
+            {{ validationMessages.confirmPassword.passwordMismatch }}
+          </span>
         </ion-note>
       </ion-item>
 
@@ -91,33 +121,58 @@
       <div *ngIf="isDriver" class="driver-fields">
         <ion-item>
           <ion-label position="floating">CNH</ion-label>
-          <ion-input type="text" formControlName="cnh" maxlength="11"></ion-input>
-          <ion-note slot="error" *ngIf="registerForm.get('cnh')?.touched && registerForm.get('cnh')?.errors?.['required']">
-            CNH é obrigatória
+          <ion-input
+            type="text"
+            formControlName="cnh"
+            maxlength="11"
+            [class.ion-valid]="registerForm.get('cnh')?.valid && registerForm.get('cnh')?.touched"
+            [class.ion-invalid]="registerForm.get('cnh')?.invalid && registerForm.get('cnh')?.touched">
+          </ion-input>
+          <ion-note slot="error" *ngFor="let error of registerForm.get('cnh')?.errors | keyvalue">
+            {{ validationMessages.cnh[error.key] }}
           </ion-note>
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Modelo do Veículo</ion-label>
-          <ion-input type="text" formControlName="vehicleModel"></ion-input>
-          <ion-note slot="error" *ngIf="registerForm.get('vehicleModel')?.touched && registerForm.get('vehicleModel')?.errors?.['required']">
-            Modelo do veículo é obrigatório
+          <ion-input
+            type="text"
+            formControlName="vehicleModel"
+            [class.ion-valid]="registerForm.get('vehicleModel')?.valid && registerForm.get('vehicleModel')?.touched"
+            [class.ion-invalid]="registerForm.get('vehicleModel')?.invalid && registerForm.get('vehicleModel')?.touched">
+          </ion-input>
+          <ion-note slot="error" *ngFor="let error of registerForm.get('vehicleModel')?.errors | keyvalue">
+            {{ validationMessages.vehicleModel[error.key] }}
           </ion-note>
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Placa do Veículo</ion-label>
-          <ion-input type="text" formControlName="vehiclePlate" (ionInput)="formatPlate($event)" maxlength="8"></ion-input>
-          <ion-note slot="error" *ngIf="registerForm.get('vehiclePlate')?.touched && registerForm.get('vehiclePlate')?.errors?.['required']">
-            Placa do veículo é obrigatória
+          <ion-input
+            type="text"
+            formControlName="vehiclePlate"
+            (ionInput)="formatPlate($event)"
+            maxlength="8"
+            [class.ion-valid]="registerForm.get('vehiclePlate')?.valid && registerForm.get('vehiclePlate')?.touched"
+            [class.ion-invalid]="registerForm.get('vehiclePlate')?.invalid && registerForm.get('vehiclePlate')?.touched">
+          </ion-input>
+          <ion-note slot="error" *ngFor="let error of registerForm.get('vehiclePlate')?.errors | keyvalue">
+            {{ validationMessages.vehiclePlate[error.key] }}
           </ion-note>
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Ano do Veículo</ion-label>
-          <ion-input type="number" formControlName="vehicleYear" min="1990" max="2024"></ion-input>
-          <ion-note slot="error" *ngIf="registerForm.get('vehicleYear')?.touched && registerForm.get('vehicleYear')?.errors?.['required']">
-            Ano do veículo é obrigatório
+          <ion-input
+            type="number"
+            formControlName="vehicleYear"
+            [min]="1990"
+            [max]="currentYear"
+            [class.ion-valid]="registerForm.get('vehicleYear')?.valid && registerForm.get('vehicleYear')?.touched"
+            [class.ion-invalid]="registerForm.get('vehicleYear')?.invalid && registerForm.get('vehicleYear')?.touched">
+          </ion-input>
+          <ion-note slot="error" *ngFor="let error of registerForm.get('vehicleYear')?.errors | keyvalue">
+            {{ validationMessages.vehicleYear[error.key] }}
           </ion-note>
         </ion-item>
       </div>

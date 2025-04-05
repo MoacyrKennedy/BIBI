@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonButton, IonItem, IonLabel, IonInput, IonSelect, IonSelectOption, IonSpinner, IonIcon, IonNote } from '@ionic/angular/standalone';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { camera, personCircle } from 'ionicons/icons';
 
 @Component({
   selector: 'app-register',
@@ -14,21 +15,76 @@ import { IonicModule } from '@ionic/angular';
   styleUrls: ['./register.page.scss'],
   standalone: true,
   imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     IonContent,
     IonHeader,
     IonTitle,
     IonToolbar,
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule
+    IonButtons,
+    IonBackButton,
+    IonButton,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonSelect,
+    IonSelectOption,
+    IonSpinner,
+    IonIcon,
+    IonNote
   ]
 })
 export class RegisterPage implements OnInit {
   registerForm: FormGroup;
   isDriver = false;
   isLoading = false;
-  photoUrl: string | null = null;
+  photoUrl: string = 'assets/images/default/avatar-placeholder.png';
+  currentYear = new Date().getFullYear();
+
+  validationMessages = {
+    name: {
+      required: 'Nome é obrigatório',
+      minlength: 'Nome deve ter no mínimo 3 caracteres'
+    },
+    cpf: {
+      required: 'CPF é obrigatório',
+      pattern: 'CPF inválido'
+    },
+    email: {
+      required: 'E-mail é obrigatório',
+      email: 'E-mail inválido'
+    },
+    phone: {
+      required: 'Telefone é obrigatório',
+      pattern: 'Telefone inválido'
+    },
+    password: {
+      required: 'Senha é obrigatória',
+      minlength: 'Senha deve ter no mínimo 6 caracteres',
+      pattern: 'Senha deve conter letras e números'
+    },
+    confirmPassword: {
+      required: 'Confirmação de senha é obrigatória',
+      passwordMismatch: 'As senhas não conferem'
+    },
+    cnh: {
+      required: 'CNH é obrigatória',
+      pattern: 'CNH inválida'
+    },
+    vehicleModel: {
+      required: 'Modelo do veículo é obrigatório'
+    },
+    vehiclePlate: {
+      required: 'Placa do veículo é obrigatória',
+      pattern: 'Placa inválida'
+    },
+    vehicleYear: {
+      required: 'Ano do veículo é obrigatório',
+      min: 'Ano inválido',
+      max: 'Ano não pode ser maior que o atual'
+    }
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,15 +92,20 @@ export class RegisterPage implements OnInit {
     private toastCtrl: ToastController,
     private router: Router
   ) {
+    addIcons({ camera, personCircle });
+
     this.registerForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      cpf: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      phone: ['', [Validators.required, Validators.pattern(/^\(\d{2}\)\s\d{5}\-\d{4}$/)]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/)
+      ]],
       confirmPassword: ['', [Validators.required]],
       userType: ['passenger', [Validators.required]],
-      // Campos opcionais para motorista
       cnh: [''],
       vehicleModel: [''],
       vehiclePlate: [''],
@@ -55,22 +116,29 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
-    // Adiciona validadores condicionais para campos de motorista
+    this.setupDriverValidation();
+  }
+
+  private setupDriverValidation() {
     this.registerForm.get('userType')?.valueChanges.subscribe(type => {
       this.isDriver = type === 'driver';
-      const driverControls = ['cnh', 'vehicleModel', 'vehiclePlate', 'vehicleYear'];
+      const driverControls = {
+        cnh: [Validators.required, Validators.pattern(/^\d{11}$/)],
+        vehicleModel: [Validators.required],
+        vehiclePlate: [Validators.required, Validators.pattern(/^[A-Z]{3}\-\d{4}$/)],
+        vehicleYear: [
+          Validators.required,
+          Validators.min(1990),
+          Validators.max(this.currentYear)
+        ]
+      };
 
-      if (this.isDriver) {
-        driverControls.forEach(control => {
-          this.registerForm.get(control)?.setValidators([Validators.required]);
-        });
-      } else {
-        driverControls.forEach(control => {
+      Object.entries(driverControls).forEach(([control, validators]) => {
+        if (this.isDriver) {
+          this.registerForm.get(control)?.setValidators(validators);
+        } else {
           this.registerForm.get(control)?.clearValidators();
-        });
-      }
-
-      driverControls.forEach(control => {
+        }
         this.registerForm.get(control)?.updateValueAndValidity();
       });
     });
