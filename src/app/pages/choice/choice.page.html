@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="light">
+    <ion-title>Escolha uma opção</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+        Sair
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="choice-container">
+    <ion-card class="choice-card" (click)="offerRide()">
+      <ion-card-header>
+        <ion-icon name="car-outline" size="large"></ion-icon>
+        <ion-card-title>Oferecer Carona</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Cadastre sua carona e ajude outras pessoas a chegarem ao seu destino.
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="choice-card" (click)="findRide()">
+      <ion-card-header>
+        <ion-icon name="person-outline" size="large"></ion-icon>
+        <ion-card-title>Pegar Carona</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Encontre uma carona para o seu destino de forma rápida e segura.
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

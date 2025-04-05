@@ -1,0 +1,105 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/choice" text="Voltar" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Encontre sua carona</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="map-container">
+    <div #map id="map"></div>
+  </div>
+
+  <div class="search-container">
+    <ion-card>
+      <ion-card-content>
+        <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+          <ion-item>
+            <ion-label position="stacked">
+              <ion-icon name="location-outline"></ion-icon>
+              Para onde você vai?
+            </ion-label>
+            <ion-input
+              id="destination-input"
+              formControlName="destination"
+              placeholder="Digite o destino">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">
+              <ion-icon name="calendar-outline"></ion-icon>
+              Quando?
+            </ion-label>
+            <ion-input
+              type="date"
+              formControlName="date"
+              placeholder="Selecione a data">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">
+              <ion-icon name="cash-outline"></ion-icon>
+              Valor máximo
+            </ion-label>
+            <ion-range
+              formControlName="maxPrice"
+              [min]="0"
+              [max]="maxPrice"
+              [pin]="true"
+              [ticks]="true"
+              [snaps]="true">
+              <div slot="start">R$ 0</div>
+              <div slot="end">R$ {{maxPrice}}</div>
+            </ion-range>
+          </ion-item>
+
+          <ion-button expand="block" type="submit" [disabled]="!searchForm.valid">
+            <ion-icon name="search-outline" slot="start"></ion-icon>
+            Buscar Caronas
+          </ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Lista de caronas mockadas -->
+    <ion-list>
+      <ion-card *ngFor="let ride of mockRides" class="ride-card">
+        <ion-card-content>
+          <div class="ride-header">
+            <ion-icon name="car-outline" size="large"></ion-icon>
+            <div class="ride-info">
+              <h2>{{ride.destination}}</h2>
+              <p>Saindo de: {{ride.origin}}</p>
+            </div>
+            <div class="ride-price">
+              <strong>R$ {{ride.price}}</strong>
+            </div>
+          </div>
+
+          <div class="ride-details">
+            <p>
+              <ion-icon name="calendar-outline"></ion-icon>
+              {{ride.date}}
+            </p>
+            <p>
+              <ion-icon name="person-outline"></ion-icon>
+              {{ride.driver}}
+            </p>
+            <p>
+              <ion-icon name="people-outline"></ion-icon>
+              {{ride.seats}} vagas
+            </p>
+          </div>
+
+          <ion-button expand="block" class="request-button">
+            Solicitar Carona
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </div>
+</ion-content>

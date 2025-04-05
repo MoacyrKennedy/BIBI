@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Bem-vindo ao BIBI</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="login-container">
+    <div class="logo-container">
+      <img src="assets/images/vehicles/kombi.png" alt="BIBI Kombi">
+    </div>
+
+    <h1 class="title">BIBI</h1>
+
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+      <ion-item>
+        <ion-label position="stacked">E-mail</ion-label>
+        <ion-input type="email" formControlName="email" placeholder="Digite seu e-mail"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Senha</ion-label>
+        <ion-input type="password" formControlName="password" placeholder="Digite sua senha"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" type="submit" class="login-button" [disabled]="!loginForm.valid || isLoading">
+        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+        <span *ngIf="!isLoading">ENTRAR</span>
+      </ion-button>
+
+      <ion-button expand="block" class="register-button" (click)="goToRegister()">
+        Criar conta
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

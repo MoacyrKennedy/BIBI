@@ -1,0 +1,131 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastro BIBI</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="register-container">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Foto do Usuário -->
+      <div class="photo-container">
+        <div class="photo-circle" (click)="selectPhoto()">
+          <img [src]="photoUrl || 'assets/avatar-placeholder.png'" alt="Foto do perfil">
+          <div class="photo-overlay">
+            <ion-icon name="camera"></ion-icon>
+          </div>
+        </div>
+      </div>
+
+      <!-- Campos Comuns -->
+      <ion-item>
+        <ion-label position="floating">Nome Completo</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+        <ion-note slot="error" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.errors?.['required']">
+          Nome é obrigatório
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">CPF</ion-label>
+        <ion-input type="text" formControlName="cpf" (ionInput)="formatCPF($event)" maxlength="14"></ion-input>
+        <ion-note slot="error" *ngIf="registerForm.get('cpf')?.touched && registerForm.get('cpf')?.errors?.['required']">
+          CPF é obrigatório
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">E-mail</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+        <ion-note slot="error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']">
+          E-mail é obrigatório
+        </ion-note>
+        <ion-note slot="error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']">
+          E-mail inválido
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Telefone</ion-label>
+        <ion-input type="tel" formControlName="phone" (ionInput)="formatPhone($event)" maxlength="15"></ion-input>
+        <ion-note slot="error" *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.errors?.['required']">
+          Telefone é obrigatório
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Senha</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+        <ion-note slot="error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']">
+          Senha é obrigatória
+        </ion-note>
+        <ion-note slot="error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['minlength']">
+          A senha deve ter no mínimo 6 caracteres
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Confirmar Senha</ion-label>
+        <ion-input type="password" formControlName="confirmPassword"></ion-input>
+        <ion-note slot="error" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors?.['required']">
+          Confirmação de senha é obrigatória
+        </ion-note>
+        <ion-note slot="error" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.errors?.['passwordMismatch']">
+          As senhas não conferem
+        </ion-note>
+      </ion-item>
+
+      <!-- Seleção de Tipo de Usuário -->
+      <ion-item>
+        <ion-label>Tipo de Usuário</ion-label>
+        <ion-select formControlName="userType" (ionChange)="onUserTypeChange($event)">
+          <ion-select-option value="passenger">Passageiro</ion-select-option>
+          <ion-select-option value="driver">Motorista</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Campos específicos para Motorista -->
+      <div *ngIf="isDriver" class="driver-fields">
+        <ion-item>
+          <ion-label position="floating">CNH</ion-label>
+          <ion-input type="text" formControlName="cnh" maxlength="11"></ion-input>
+          <ion-note slot="error" *ngIf="registerForm.get('cnh')?.touched && registerForm.get('cnh')?.errors?.['required']">
+            CNH é obrigatória
+          </ion-note>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Modelo do Veículo</ion-label>
+          <ion-input type="text" formControlName="vehicleModel"></ion-input>
+          <ion-note slot="error" *ngIf="registerForm.get('vehicleModel')?.touched && registerForm.get('vehicleModel')?.errors?.['required']">
+            Modelo do veículo é obrigatório
+          </ion-note>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Placa do Veículo</ion-label>
+          <ion-input type="text" formControlName="vehiclePlate" (ionInput)="formatPlate($event)" maxlength="8"></ion-input>
+          <ion-note slot="error" *ngIf="registerForm.get('vehiclePlate')?.touched && registerForm.get('vehiclePlate')?.errors?.['required']">
+            Placa do veículo é obrigatória
+          </ion-note>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Ano do Veículo</ion-label>
+          <ion-input type="number" formControlName="vehicleYear" min="1990" max="2024"></ion-input>
+          <ion-note slot="error" *ngIf="registerForm.get('vehicleYear')?.touched && registerForm.get('vehicleYear')?.errors?.['required']">
+            Ano do veículo é obrigatório
+          </ion-note>
+        </ion-item>
+      </div>
+
+      <ion-button expand="block" type="submit" [disabled]="!registerForm.valid || isLoading">
+        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+        <span *ngIf="!isLoading">Cadastrar</span>
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

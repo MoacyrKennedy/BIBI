@@ -1,0 +1,75 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/choice"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Pegar Carona</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="search-container">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Origem</ion-label>
+        <ion-input
+          #origemInput
+          [(ngModel)]="origem"
+          placeholder="Digite o local de origem"
+          (ionInput)="onInputChange($event, 'origem')"
+          (ionFocus)="selectedInput = 'origem'"
+          (ionBlur)="onInputBlur()"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Destino</ion-label>
+        <ion-input
+          #destinoInput
+          [(ngModel)]="destino"
+          placeholder="Digite o local de destino"
+          (ionInput)="onInputChange($event, 'destino')"
+          (ionFocus)="selectedInput = 'destino'"
+          (ionBlur)="onInputBlur()"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Data</ion-label>
+        <ion-input
+          type="date"
+          [(ngModel)]="data"
+          placeholder="Data"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Hora</ion-label>
+        <ion-input
+          type="time"
+          [(ngModel)]="hora"
+          placeholder="Hora"
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="block" (click)="buscarCaronas()" class="ion-margin-top">
+      Buscar Caronas
+    </ion-button>
+  </div>
+
+  <!-- Sugestões de autocomplete -->
+  <div class="suggestions-container" *ngIf="showSuggestions && suggestions.length > 0">
+    <ion-list>
+      <ion-item
+        *ngFor="let suggestion of suggestions"
+        (click)="selectSuggestion(suggestion, selectedInput!)"
+        button
+      >
+        <ion-label>{{ suggestion.displayName }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div #map class="map-container"></div>
+</ion-content>
