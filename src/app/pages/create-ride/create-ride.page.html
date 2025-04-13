@@ -1,16 +1,116 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="light">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/choice" text="Voltar" icon="chevron-back-outline"></ion-back-button>
+      <ion-back-button defaultHref="/choice"></ion-back-button>
     </ion-buttons>
     <ion-title>Oferecer Carona</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">create-ride</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="global-container">
+    <form [formGroup]="rideForm" (ngSubmit)="onSubmit()">
+      <ion-list>
+        <ion-item class="custom-item" lines="none">
+          <ion-label position="stacked">Origem</ion-label>
+          <ion-input
+            #origemInput
+            formControlName="origem"
+            type="text"
+            required
+            placeholder="Digite o local de origem"
+            (ionInput)="onInputChange($event, 'origem')"
+            (ionFocus)="selectedInput = 'origem'"
+            (ionBlur)="onInputBlur()"
+          >
+            <ion-icon name="location-outline" slot="start"></ion-icon>
+          </ion-input>
+        </ion-item>
+
+        <ion-item class="custom-item" lines="none">
+          <ion-label position="stacked">Destino</ion-label>
+          <ion-input
+            #destinoInput
+            formControlName="destino"
+            type="text"
+            required
+            placeholder="Digite o local de destino"
+            (ionInput)="onInputChange($event, 'destino')"
+            (ionFocus)="selectedInput = 'destino'"
+            (ionBlur)="onInputBlur()"
+          >
+            <ion-icon name="airplane-outline" slot="start"></ion-icon>
+          </ion-input>
+        </ion-item>
+
+        <ion-item class="custom-item" lines="none">
+          <ion-label position="stacked">Data da Viagem</ion-label>
+          <ion-datetime-button datetime="data" class="datetime-button">
+            <ion-icon name="calendar-outline" slot="start"></ion-icon>
+          </ion-datetime-button>
+        </ion-item>
+
+        <ion-item class="custom-item" lines="none">
+          <ion-label position="stacked">Horário da Viagem</ion-label>
+          <ion-datetime-button datetime="hora" class="datetime-button">
+            <ion-icon name="time-outline" slot="start"></ion-icon>
+          </ion-datetime-button>
+        </ion-item>
+      </ion-list>
+
+      <ion-button expand="block" type="submit" class="custom-button">
+        PRÓXIMO
+      </ion-button>
+    </form>
+  </div>
+
+  <div class="suggestions-container" *ngIf="showSuggestions && suggestions.length > 0">
+    <ion-list>
+      <ion-item
+        *ngFor="let suggestion of suggestions"
+        (click)="selectSuggestion(suggestion, selectedInput!)"
+        button
+      >
+        <ion-label>{{ suggestion.displayName }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div #map class="map-container"></div>
 </ion-content>
+
+<ion-modal [keepContentsMounted]="true" class="datetime-modal">
+  <ng-template>
+    <form [formGroup]="rideForm">
+      <ion-datetime
+        id="data"
+        presentation="date"
+        formControlName="data"
+        locale="pt-BR"
+        first-day-of-week="0"
+        showDefaultButtons="true"
+        doneText="Confirmar"
+        cancelText="Cancelar"
+        size="cover"
+      ></ion-datetime>
+    </form>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [keepContentsMounted]="true" class="datetime-modal">
+  <ng-template>
+    <form [formGroup]="rideForm">
+      <ion-datetime
+        id="hora"
+        presentation="time"
+        formControlName="hora"
+        locale="pt-BR"
+        showDefaultButtons="true"
+        doneText="Confirmar"
+        cancelText="Cancelar"
+        size="cover"
+        minuteValues="0,15,30,45"
+      ></ion-datetime>
+    </form>
+  </ng-template>
+</ion-modal>

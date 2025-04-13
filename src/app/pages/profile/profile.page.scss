@@ -1,0 +1,102 @@
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px 0;
+
+  .avatar-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1rem;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid #4CAF50;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .profile-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid white;
+    }
+
+    .camera-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: #4CAF50;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  h2 {
+    color: var(--bibi-yellow);
+    margin: 0;
+    font-size: 24px;
+  }
+
+  .rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    color: #666;
+
+    ion-icon {
+      color: var(--bibi-yellow);
+      margin-right: 5px;
+    }
+
+  }
+}
+
+.profile-info {
+  background: var(--bibi-white);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  ion-item {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --inner-padding-end: 0;
+    --border-color: #eee;
+
+    h3 {
+      color: var(--bibi-yellow);
+      font-size: 16px;
+      margin: 0 0 5px;
+    }
+
+    p {
+      color: #666;
+      margin: 0;
+      font-size: 14px;
+    }
+  }
+}
+
+.profile-actions {
+  padding: 20px 0;
+}
+

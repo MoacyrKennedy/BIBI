@@ -51,3 +51,13 @@ ion-card-content p {
   font-size: 16px;
   line-height: 1.5;
 }
+
+.profile-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+
+  ion-avatar {
+    width: 40px;
+    height: 40px;
+  }
+}

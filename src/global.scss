@@ -37,26 +37,73 @@
 @import '@ionic/angular/css/palettes/dark.system.css';
 
 :root {
-  --ion-background-color: #E8F5E9;
-  --ion-background: #E8F5E9;
+  --ion-background-color: #fff;
+  --ion-background: #fff;
 }
 
 ion-content {
-  --background: #E8F5E9;
+  --background: #fff;
 }
 
 ion-content::part(background) {
-  background: #E8F5E9;
+  background: #fff;
 }
 
 ion-app {
-  background: #E8F5E9;
+  background: #fff;
 }
 
 .ion-page {
-  background: #E8F5E9;
+  background: #fff;
 }
 
 ion-content {
-  --ion-background-color: #E8F5E9;
+  --ion-background-color: #fff;
+}
+
+.datetime-modal {
+  --background: white;
+
+  ion-datetime {
+    --background: white;
+    color: black !important;
+
+    &::part(calendar-day) {
+      color: black;
+    }
+
+    &::part(calendar-day selected) {
+      color: white;
+    }
+
+    &::part(calendar-day active) {
+      color: black;
+    }
+
+    &::part(time-button) {
+      color: black;
+    }
+
+    &::part(calendar-month) {
+      color: black;
+    }
+
+    &::part(calendar-year) {
+      color: black;
+    }
+
+    &::part(title) {
+      color: black;
+      background: white;
+    }
+
+    &::part(calendar-header) {
+      color: black;
+      background: white;
+    }
+
+    &::part(wheel-item) {
+      color: black;
+    }
+  }
 }

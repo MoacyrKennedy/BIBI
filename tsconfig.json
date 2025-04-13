@@ -24,7 +24,9 @@
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["node", "estree"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

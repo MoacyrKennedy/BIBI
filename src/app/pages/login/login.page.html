@@ -20,16 +20,21 @@
 
       <ion-item>
         <ion-label position="stacked">Senha</ion-label>
-        <ion-input type="password" formControlName="password" placeholder="Digite sua senha"></ion-input>
+        <ion-input type="password" formControlName="senha" placeholder="Digite sua senha"></ion-input>
       </ion-item>
 
-      <ion-button expand="block" type="submit" class="login-button" [disabled]="!loginForm.valid || isLoading">
-        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
-        <span *ngIf="!isLoading">ENTRAR</span>
+      <ion-button expand="block" type="submit" class="login-button" [disabled]="!loginForm.valid || isSubmitting">
+        <ion-spinner *ngIf="isSubmitting" name="crescent"></ion-spinner>
+        <span *ngIf="!isSubmitting">ENTRAR</span>
       </ion-button>
 
       <ion-button expand="block" class="register-button" (click)="goToRegister()">
         Criar conta
+      </ion-button>
+
+      <ion-button expand="block" class="horn-button" (click)="playHornSound()">
+        <ion-icon name="car-outline"></ion-icon>
+        Buzinar
       </ion-button>
     </form>
   </div>

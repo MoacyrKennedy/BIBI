@@ -1,9 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonButton, IonButtons } from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { carOutline, personOutline, logOutOutline } from 'ionicons/icons';
+import { carOutline, personOutline, logOutOutline, personCircleOutline } from 'ionicons/icons';
+
+interface User {
+  name: string;
+  email: string;
+  phone: string;
+  photoUrl: string;
+  rating: number;
+  totalRatings: number;
+  userType: 'passageiro' | 'motorista';
+  cnh?: string;
+  vehicleModel?: string;
+  vehiclePlate?: string;
+  vehicleYear?: string;
+}
 
 @Component({
   selector: 'app-choice',
@@ -12,26 +26,34 @@ import { carOutline, personOutline, logOutOutline } from 'ionicons/icons';
   standalone: true,
   imports: [
     CommonModule,
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    IonIcon,
-    IonCard,
-    IonCardContent,
-    IonCardHeader,
-    IonCardTitle,
-    IonButton,
-    IonButtons
-  ],
+    IonicModule
+  ]
 })
-export class ChoicePage {
+export class ChoicePage implements OnInit {
+  photoUrl: string = 'assets/images/default/avatar-placeholder.png';
+
   constructor(private router: Router) {
     addIcons({
       carOutline,
       personOutline,
-      logOutOutline
+      logOutOutline,
+      personCircleOutline
     });
+  }
+
+  ngOnInit() {
+    // Carrega os dados do usuário do localStorage
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      const user: User = JSON.parse(savedUser);
+      if (user.photoUrl) {
+        this.photoUrl = user.photoUrl;
+      }
+    }
+  }
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
   }
 
   offerRide() {

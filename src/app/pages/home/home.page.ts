@@ -1,23 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonCard,
-  IonCardContent,
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonButton,
-  IonIcon,
-  IonRange,
-  IonList,
-  IonButtons,
-  IonBackButton
-} from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { carOutline, cashOutline, locationOutline, searchOutline, chevronBackOutline, calendarOutline, peopleOutline, personOutline } from 'ionicons/icons';
 import { Router } from '@angular/router';
@@ -33,22 +17,8 @@ declare var google: any;
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonCard,
-    IonCardContent,
-    IonItem,
-    IonLabel,
-    IonInput,
-    IonButton,
-    IonIcon,
-    IonRange,
-    IonList,
-    IonButtons,
-    IonBackButton
-  ],
+    IonicModule
+  ]
 })
 export class HomePage implements OnInit {
   @ViewChild('map') mapElement!: ElementRef;

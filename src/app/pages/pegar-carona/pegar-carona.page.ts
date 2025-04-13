@@ -12,9 +12,15 @@ import {
   IonLabel,
   IonList,
   IonBackButton,
-  IonButtons
+  IonButtons,
+  IonIcon,
+  IonDatetime,
+  IonDatetimeButton,
+  IonModal
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { inject } from '@angular/core';
 
 declare const L: any;
 
@@ -36,8 +42,13 @@ declare const L: any;
     IonLabel,
     IonList,
     IonBackButton,
-    IonButtons
-  ]
+    IonButtons,
+    IonIcon,
+    IonDatetime,
+    IonDatetimeButton,
+    IonModal
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PegarCaronaPage implements OnInit, AfterViewInit {
   @ViewChild('map') mapElement!: ElementRef;
