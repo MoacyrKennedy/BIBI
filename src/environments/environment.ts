@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: ''
+  apiUrl: 'https://bibi-node.onrender.com'
+
 };
 
 /*
